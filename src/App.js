@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import Confetti from 'react-confetti'
 
 const App = () => {
   const [targetColor, setTargetColor] = useState('')
@@ -10,6 +11,8 @@ const App = () => {
   const [isGameOver, setIsGameOver] = useState(false)
   const [selectedColor, setSelectedColor] = useState('')
   const [isCorrect, setIsCorrect] = useState(false)
+  const [hasWon, setHasWon] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
 
   const generateRandomColor = () => {
     const letters = '0123456789ABCDEF'
@@ -60,6 +63,8 @@ const App = () => {
     setIsGameOver(false)
     setSelectedColor('')
     setIsCorrect(false)
+    setHasWon(false)
+    setShowConfetti(false)
   }
 
   const handleGuess = color => {
@@ -69,15 +74,24 @@ const App = () => {
 
     if (color === targetColor) {
       setIsCorrect(true)
-      setGameStatus('Correct!')
-      setScore(prevScore => prevScore + 1)
+      const newScore = score + 1
+      setScore(newScore)
       setTrials(3) // Reset trials on correct guess
-      setTimeout(() => {
-        generateNewColors()
-        setGameStatus('')
-        setSelectedColor('')
-        setIsCorrect(false)
-      }, 1000)
+
+      if (newScore === 10) {
+        setHasWon(true)
+        setGameStatus('Congratulations!')
+        setShowConfetti(true)
+        setIsGameOver(true)
+      } else {
+        setGameStatus('Correct!')
+        setTimeout(() => {
+          generateNewColors()
+          setGameStatus('')
+          setSelectedColor('')
+          setIsCorrect(false)
+        }, 1000)
+      }
     } else {
       setIsCorrect(false)
       const newTrials = trials - 1
@@ -98,61 +112,66 @@ const App = () => {
   }, [])
 
   return (
-    <div className='game-container'>
-      <div className='game-board'>
-        <h1 className='game-title'>Color Guessing Game</h1>
+    <>
+      {showConfetti && (
+        <Confetti width={window.innerWidth} height={window.innerHeight} />
+      )}
+      <div className='game-container'>
+        <div className='game-board'>
+          <h1 className='game-title'>Color Guessing Game</h1>
 
-        <div
-          data-testid='colorBox'
-          className={`color-box ${isCorrect ? 'correct' : ''}`}
-          style={{ backgroundColor: targetColor }}
-        ></div>
+          <div
+            data-testid='colorBox'
+            className={`color-box ${isCorrect ? 'correct' : ''}`}
+            style={{ backgroundColor: targetColor }}
+          ></div>
 
-        <p data-testid='gameInstructions' className='game-instructions'>
-          Guess the correct color shade!
-        </p>
+          <p data-testid='gameInstructions' className='game-instructions'>
+            Guess the correct color shade!
+          </p>
 
-        <div className='color-options'>
-          {colorOptions.map((color, index) => (
-            <button
-              key={`${color}-${index}`}
-              data-testid='colorOption'
-              className={`color-option ${
-                selectedColor === color && !isCorrect ? 'wrong' : ''
-              }`}
-              style={{ backgroundColor: color }}
-              onClick={() => handleGuess(color)}
-              disabled={isGameOver}
-            ></button>
-          ))}
+          <div className='color-options'>
+            {colorOptions.map((color, index) => (
+              <button
+                key={`${color}-${index}`}
+                data-testid='colorOption'
+                className={`color-option ${
+                  selectedColor === color && !isCorrect ? 'wrong' : ''
+                }`}
+                style={{ backgroundColor: color }}
+                onClick={() => handleGuess(color)}
+                disabled={isGameOver}
+              ></button>
+            ))}
+          </div>
+
+          <p
+            data-testid='gameStatus'
+            className={`game-status ${
+              gameStatus === 'Correct!'
+                ? 'status-correct'
+                : gameStatus === 'Game Over!'
+                ? 'status-gameover'
+                : 'status-wrong'
+            }`}
+          >
+            {gameStatus}
+          </p>
+
+          <p data-testid='score' className='score'>
+            Score: {score}
+          </p>
+
+          <button
+            data-testid='newGameButton'
+            className='new-game-button'
+            onClick={startNewGame}
+          >
+            {isGameOver ? (hasWon ? 'New Game' : 'Play Again') : 'New Game'}
+          </button>
         </div>
-
-        <p
-          data-testid='gameStatus'
-          className={`game-status ${
-            gameStatus === 'Correct!'
-              ? 'status-correct'
-              : gameStatus === 'Game Over!'
-              ? 'status-gameover'
-              : 'status-wrong'
-          }`}
-        >
-          {gameStatus}
-        </p>
-
-        <p data-testid='score' className='score'>
-          Score: {score}
-        </p>
-
-        <button
-          data-testid='newGameButton'
-          className='new-game-button'
-          onClick={startNewGame}
-        >
-          {isGameOver ? 'Play Again' : 'New Game'}
-        </button>
       </div>
-    </div>
+    </>
   )
 }
 
