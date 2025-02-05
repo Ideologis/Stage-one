@@ -1,0 +1,166 @@
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+  .game-container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.game-board {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+.game-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.color-box {
+  width: 100%;
+  height: 8rem;
+  border-radius: 0.5rem;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease-in-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+.color-box.correct {
+  animation: celebrate 0.5s ease-in-out;
+}
+
+@keyframes celebrate {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.game-instructions {
+  text-align: center;
+  color: #4b5563;
+  margin-bottom: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.color-option {
+  width: 100%;
+  height: 4rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: 'Roboto', sans-serif;
+}
+
+.color-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.color-option:active {
+  transform: scale(0.95);
+}
+
+.color-option.wrong {
+  animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.game-status {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  min-height: 1.5em;
+  transition: opacity 0.3s ease-in-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+.status-correct {
+  color: #10b981;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.status-wrong {
+  color: #f59e0b;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.status-gameover {
+  color: #ef4444;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.score {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.new-game-button {
+  width: 100%;
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  font-family: 'Roboto', sans-serif;
+}
+
+.new-game-button:hover {
+  background-color: #2563eb;
+}
+
+.new-game-button:active {
+  transform: scale(0.98);
+}
